@@ -1,6 +1,8 @@
 # disculpemebot
 Bot para twitter que pide disculpas.
-Es un MBV (minimo bot viable)
+Es un MBV (minimo bot viable) en python basado en tweepy.
+
+![Disculpeme Bot](sir.jpg "@disculpemeBot")
 
 **Uso**
 
