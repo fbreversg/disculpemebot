@@ -46,7 +46,7 @@ class ReplyToTweet(tweepy.StreamListener):
 
             giphy = safygiphy.Giphy()
             gif = giphy.random(tag=random.choice(tags))
-            img_url = gif['data']['image_url']
+            img_url = gif['data']['fixed_height_downsampled_url']
 
             filename = img_url.split('/')[-1]
 
