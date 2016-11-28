@@ -57,7 +57,7 @@ class ReplyToTweet(tweepy.StreamListener):
             if len(reply_text) > 140:
                 reply_text = reply_text[0:137] + '...'
 
-            api.update_with_media(filename, status=reply_text,  id=tweet_id)
+            api.update_with_media(filename, status=reply_text, in_reply_to_status_id=tweet_id)
 
             os.remove(filename)
 
@@ -66,6 +66,11 @@ class ReplyToTweet(tweepy.StreamListener):
 
 
 if __name__ == '__main__':
+
     streamListener = ReplyToTweet()
     twitterStream = tweepy.Stream(auth, streamListener)
+
     twitterStream.userstream(_with='user')
+
+
+
