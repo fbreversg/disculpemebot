@@ -1,14 +1,15 @@
 import configparser
-from io import BytesIO
 import json
+import os
 import random
-import requests
 import tweepy
 import safygiphy
+from urllib.request import urlretrieve
+
+DOWNLOADED_IMAGE_PATH = "images/"
 
 config = configparser.ConfigParser()
 config.read('disculpemeBOT.config')
-
 
 consumer_key = config.get('apikey', 'key')
 consumer_secret = config.get('apikey', 'secret')
@@ -39,11 +40,7 @@ class ReplyToTweet(tweepy.StreamListener):
         else:
             from_self = False
 
-        print(from_self)
-
         if retweeted is not None and not retweeted and not from_self:
-
-            print("Dentro")
             tweet_id = tweet.get('id_str')
             screen_name = tweet.get('user', {}).get('screen_name', '')
 
@@ -51,20 +48,22 @@ class ReplyToTweet(tweepy.StreamListener):
             gif = giphy.random(tag=random.choice(tags))
             img_url = gif['data']['image_url']
 
+            filename = img_url.split('/')[-1]
 
-            print("img_url: " + img_url)
+            urlretrieve(img_url, filename)
 
-            img = BytesIO(requests.get(url=img_url).content)
-
-            reply_text = '@' + screen_name + "Ego te absolvo."
+            reply_text = '@' + screen_name + " Ego te absolvo."
 
             if len(reply_text) > 140:
                 reply_text = reply_text[0:137] + '...'
 
-            api.update_with_media(img, status=reply_text,  id=tweet_id)
+            api.update_with_media(filename, status=reply_text,  id=tweet_id)
+
+            os.remove(filename)
 
     def on_error(self, status):
         print('STATUS: ' + status)
+
 
 if __name__ == '__main__':
     streamListener = ReplyToTweet()
