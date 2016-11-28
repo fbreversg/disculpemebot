@@ -12,6 +12,7 @@ import json
 import os
 import random
 import safygiphy
+import ssl
 import time
 import tweepy
 from urllib.request import urlretrieve
@@ -42,7 +43,7 @@ class ReplyToTweet(tweepy.StreamListener):
 
     def on_data(self, data):
 
-        print("DATA " + data)
+        # print("DATA " + data)
         tweet = json.loads(data.strip())
 
         retweeted = tweet.get('retweeted', False)
