@@ -11,9 +11,12 @@ import configparser
 import json
 import os
 import random
-import tweepy
 import safygiphy
+import time
+import tweepy
 from urllib.request import urlretrieve
+from requests.exceptions import Timeout, ConnectionError
+from requests.packages.urllib3.exceptions import ReadTimeoutError
 
 DOWNLOADED_IMAGE_PATH = "images/"
 
@@ -77,10 +80,14 @@ class ReplyToTweet(tweepy.StreamListener):
 
 if __name__ == '__main__':
 
-    streamListener = ReplyToTweet()
-    twitterStream = tweepy.Stream(auth, streamListener)
+    while True:
+        try:
+            streamListener = ReplyToTweet()
+            twitterStream = tweepy.Stream(auth, streamListener)
 
-    twitterStream.userstream(_with='user')
+            twitterStream.userstream(_with='user')
 
-
-
+        except (Timeout, ssl.SSLError, ReadTimeoutError, ConnectionError) as exc:
+            print("Some kind of crash")
+            time.sleep(180)
+            continue
