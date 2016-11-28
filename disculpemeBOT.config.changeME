@@ -1,0 +1,10 @@
+[apikey]
+key = <key>
+secret = <secret>
+
+[token]
+token = <token>
+secret = <secret>
+
+[user]
+account_user_id = <disculpemeBOT>
