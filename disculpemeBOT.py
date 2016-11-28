@@ -1,6 +1,8 @@
 import configparser
+from io import BytesIO
 import json
 import random
+import requests
 import tweepy
 import safygiphy
 
@@ -37,21 +39,29 @@ class ReplyToTweet(tweepy.StreamListener):
         else:
             from_self = False
 
+        print(from_self)
+
         if retweeted is not None and not retweeted and not from_self:
 
+            print("Dentro")
             tweet_id = tweet.get('id_str')
             screen_name = tweet.get('user', {}).get('screen_name', '')
 
             giphy = safygiphy.Giphy()
             gif = giphy.random(tag=random.choice(tags))
-            chat_response = gif['data']['image_url']
+            img_url = gif['data']['image_url']
 
-            reply_text = '@' + screen_name + ' ' + chat_response
+
+            print("img_url: " + img_url)
+
+            img = BytesIO(requests.get(url=img_url).content)
+
+            reply_text = '@' + screen_name + "Ego te absolvo."
 
             if len(reply_text) > 140:
                 reply_text = reply_text[0:137] + '...'
 
-            api.update_status(reply_text, tweet_id)
+            api.update_with_media(img, status=reply_text,  id=tweet_id)
 
     def on_error(self, status):
         print('STATUS: ' + status)
