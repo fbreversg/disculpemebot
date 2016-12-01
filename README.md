@@ -17,9 +17,9 @@ pip install requirements.txt
 
 **Roadmap**
 
-- Revisar porqué los replies no aparecen en timeline del perdonado.
+-  ~~Revisar porqué los replies no aparecen en timeline del perdonado.~~ Funcionando. Comportamiento inicial erratico de twitter y no se ha vuelto a reproducir.
 - Mas lógica en las respuestas.
-- Control del timeout en el stream y relanzamiento.
+- ~~Control del timeout en el stream y relanzamiento.~~ Funcionando. Capturadas excepciones posibles y hace relaunch 180 segundos despues.
 
 **Licencia**
 
